@@ -2,9 +2,14 @@
 
 ---
 
+<div align="center">
+
 # 🌟 **azauthlib** 🌟
 
 > **Your Simplified Authentication Companion for Azure Microsoft Graph**
+
+</div>
+
 
 `azauthlib` is a Python library that **streamlines the authentication process** with Azure Microsoft Graph. From interactive logins to client credentials flow, `azauthlib` provides an intuitive interface, robust token management, and a GUI for seamless configuration.  
 
