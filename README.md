@@ -15,6 +15,21 @@
 
 🔐 Whether you're building applications that interact with Microsoft Graph APIs or automating workflows, `azauthlib` has you covered.
 
+![Microsoft REST API](https://img.shields.io/badge/Powered%20by-Microsoft%20REST%20APIs-blue)
+![Release Date](https://img.shields.io/github/release-date/cedricmoorejr/azauthlib)
+![Azure](https://img.shields.io/badge/Cloud-Azure-blue?logo=microsoft-azure)
+![Language](https://img.shields.io/badge/language-python-blue)
+![License](https://img.shields.io/github/license/cedricmoorejr/azauthlib)
+![PyPI](https://img.shields.io/pypi/v/azauthlib)
+![Static Badge](https://img.shields.io/badge/status-beta-yellow)
+![OAuth 2.0](https://img.shields.io/badge/OAuth-2.0-blue)
+![Version](https://img.shields.io/github/v/release/cedricmoorejr/azauthlib)
+![Azure AD](https://img.shields.io/badge/Azure%20Active%20Directory-Integration-blue?logo=microsoft)
+![OpenID Connect](https://img.shields.io/badge/OpenID%20Connect-Supported-green)
+![Azure DevOps](https://img.shields.io/badge/DevOps-Azure-blue?logo=azure-devops)
+![Docs](https://img.shields.io/badge/docs-complete-brightgreen)
+![Microsoft Graph](https://img.shields.io/badge/Microsoft%20Graph-API-blue?logo=microsoft)
+![Code Style](https://img.shields.io/badge/code%20style-pep8-green)
 ---
 
 ## ✨ **Features** ✨
