@@ -10,9 +10,9 @@ import logging
 import sys
 
 # Custom Imports
-from gui_utils import enforce_single_instance, on_exit
-from appdata import UserDataDirectory, find_default_user_data_dir
-from _configure import konfigurasie
+from azauthlib.gui_utils import enforce_single_instance, on_exit
+from azauthlib.appdata import UserDataDirectory, find_default_user_data_dir
+from azauthlib._configure import konfigurasie
 
 # Define the application name
 app_name = "azgraphx-auth"

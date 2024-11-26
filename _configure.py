@@ -4,7 +4,7 @@ import os
 import logging
 
 # Custom Imports
-from appdata import UserDataDirectory
+from azauthlib.appdata import UserDataDirectory
 
 class hull:
     class bool:
