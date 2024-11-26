@@ -9,9 +9,9 @@ import webbrowser
 import logging
 
 # Custom Imports
-from .permissions import scope_fmt
-from ._configure import konfigurasie
-from .tokens import tokentime_fmt, load_token_cache, save_token_cache, resolve_token_path
+from permissions import scope_fmt
+from _configure import konfigurasie
+from tokens import tokentime_fmt, load_token_cache, save_token_cache, resolve_token_path
 
 # Paths
 default_env_path = konfigurasie.default_env_path

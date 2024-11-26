@@ -4,7 +4,7 @@ import os
 import logging
 
 # Custom Imports
-from .appdata import UserDataDirectory
+from appdata import UserDataDirectory
 
 class hull:
     class bool:
