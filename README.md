@@ -15,6 +15,7 @@
 
 🔐 Whether you're building applications that interact with Microsoft Graph APIs or automating workflows, `azauthlib` has you covered.
 
+[![PyPI Downloads](https://static.pepy.tech/badge/azauthlib)](https://pepy.tech/projects/azauthlib)
 ![Microsoft REST API](https://img.shields.io/badge/Powered%20by-Microsoft%20REST%20APIs-blue)
 ![Release Date](https://img.shields.io/github/release-date/cedricmoorejr/azauthlib)
 ![Azure](https://img.shields.io/badge/Cloud-Azure-blue?logo=microsoft-azure)
