@@ -31,6 +31,7 @@
 ![Docs](https://img.shields.io/badge/docs-complete-brightgreen)
 ![Microsoft Graph](https://img.shields.io/badge/Microsoft%20Graph-API-blue?logo=microsoft)
 ![Code Style](https://img.shields.io/badge/code%20style-pep8-green)
+[![Engineered by DOYDL Technologies](https://img.shields.io/badge/Engineered%20by-DOYDL%20Technologies-blue)](https://doydl.com)
 ---
 
 ## ✨ **Features** ✨
