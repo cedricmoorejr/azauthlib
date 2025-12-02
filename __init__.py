@@ -1,23 +1,15 @@
-# main
-__all__ = ['Authentication']
+"""
+Azauthlib: Azure Authentication and Token Management Library
+"""
+
+# Library version
+__version__ = "1.2.2b1"
 
 # Explicit imports
 from .authentication import Authentication
 
-
-# import os
-# import sys
-# 
-# # Absolute path of this package's directory
-# PACKAGEPATH = os.path.abspath(os.path.dirname(__file__))
-# 
-# # Add the package path to sys.path
-# if PACKAGEPATH not in sys.path:
-#     sys.path.append(PACKAGEPATH)
-# 
-# # # Define HOMEPATH for general usage
-# # HOMEPATH = os.path.dirname(PACKAGEPATH)
-# 
-# from authentication import Authentication
-# 
-# __all__ = ['Authentication']
+# Define what gets exported on "from azauthlib import *"
+__all__ = [
+    "Authentication",
+    "__version__",
+]
