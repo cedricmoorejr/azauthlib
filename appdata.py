@@ -7,7 +7,7 @@ import uuid
 import time
 import re
 import logging
-
+import platform
 
 # Configure logging
 logging.basicConfig(
@@ -357,3 +357,4 @@ class UserDataDirectory:
             The list of public method names.
         """    	
         return ['Dir', 'Exists', 'Omit', 'DirFile', 'Clean']
+
