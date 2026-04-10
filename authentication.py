@@ -1,14 +1,19 @@
-import os
-from msal import PublicClientApplication, ConfidentialClientApplication
-import threading
-import re
-from dotenv import load_dotenv
-import time
-import sys
-import webbrowser
-import logging
+# -*- coding: utf-8 -*-
 
-# Custom Imports
+#────────── Base Python imports ───────────────────────────────────────────────────────────────────────────────────
+import logging
+import os
+import re
+import sys
+import threading
+import time
+import webbrowser
+
+#────────── Third-party library imports ───────────────────────────────────────────────────────────────────────────
+from dotenv import load_dotenv
+from msal import ConfidentialClientApplication, PublicClientApplication
+
+#────────── Project-specific imports (directly from this project's source code) ───────────────────────────────────  
 from azauthlib.permissions import scope_fmt
 from azauthlib._configure import konfigurasie
 from azauthlib.tokens import tokentime_fmt, load_token_cache, save_token_cache, resolve_token_path
@@ -344,23 +349,23 @@ class Authentication:
             """
             if not os.path.exists(env_path):
                 raise FileNotFoundError(f"The specified .env file does not exist at: {env_path}")
-
-            load_dotenv(env_path)
-            
+            from dotenv import dotenv_values
+            values = dotenv_values(env_path)
             default_key_map = {
                 "client_id": "CLIENT_ID",
                 "tenant_id": "TENANT_ID",
-                "client_secret": "CLIENT_SECRET"
+                "client_secret": "CLIENT_SECRET",
             }
             key_map = key_map or default_key_map
-
             credentials = {}
             for attr_name, env_var in key_map.items():
-                value = os.getenv(env_var)
+                value = values.get(env_var)
+                if attr_name == "client_secret":
+                    credentials[attr_name] = value
+                    continue
                 if value is None:
                     raise ValueError(f"Environment variable {env_var} is missing in the .env file.")
                 credentials[attr_name] = value
-
             self.auth.client_id = credentials.get("client_id")
             self.auth.tenant_id = credentials.get("tenant_id")
             self.auth.client_secret = credentials.get("client_secret")
@@ -368,7 +373,7 @@ class Authentication:
             if not all([self.auth.client_id, self.auth.tenant_id]):
                 raise ValueError("One or more required variables are missing.")
             logging.info("Credentials Stored")
-            return self.auth            
+            return self.auth          
 
         def WithOSEnv(self, key_map=None, authority=None):
             """
@@ -471,20 +476,26 @@ class Authentication:
         None: 
             Updates the internal token state or initiates interactive authentication if silent authentication fails.
         """   	
-        token_cache = load_token_cache(self.token_path)
-        app = PublicClientApplication(authority=self.authority, client_id=self.client_id, token_cache=token_cache)
+        token_cache = load_token_cache(self.token_path) if self.token_path else None
+        app = PublicClientApplication(
+            authority=self.authority,
+            client_id=self.client_id,
+            token_cache=token_cache,
+        )
         accounts = app.get_accounts()
         result = None
         if accounts:
             result = app.acquire_token_silent(scopes or self.scopes, account=accounts[0])
+
         if result and "access_token" in result:
-            self.token_result_cache = result  
+            if self.token_path and token_cache:
+                save_token_cache(token_cache, self.token_path)
+            self.token_result_cache = result
             self._update_internal_state()
             logging.info("Silent Authentication Success")
         else:
-            logging.warning("Silent Authentication Failed - No valid refresh token, initiating interactive authentication")
-            result = self.Interactive(scopes or self.scopes)
-        return None        
+            logging.warning("Silent Authentication Failed - No valid refresh token.")
+        return None      
 
     def Interactive(self, scopes=None):
         """
@@ -511,11 +522,9 @@ class Authentication:
         def interactive_auth():
             nonlocal result
             result = app.acquire_token_interactive(scopes or self.scopes)
-        
         auth_thread = threading.Thread(target=interactive_auth)
         auth_thread.start()
-        auth_thread.join(timeout=10)
-        
+        auth_thread.join(timeout=30)
         if auth_thread.is_alive():
             logging.warning("Authentication timed out.")
             return None            
@@ -527,7 +536,7 @@ class Authentication:
                 self._update_internal_state()
                 logging.info("Interactive Authentication Success")
             else:
-                logging.error("Interactive Authentication Failed:", result)
+                logging.error(f"Interactive Authentication Failed: {result}")
         return None        
 
     def ClientCredentials(self, scopes=None):
@@ -556,7 +565,7 @@ class Authentication:
             self._update_internal_state() 
             logging.info("Access token acquired successfully.")
         else:
-            logging.error("Failed to acquire access token:", result)
+            logging.error(f"Failed to acquire access token: {result}")
         return None        
     
     def DeviceCodeFlow(self, scopes=None, webbrowser_enabled=False):
@@ -580,32 +589,35 @@ class Authentication:
         None: 
             Updates the internal token state after successful authentication.
         """   	
-        app = PublicClientApplication(self.client_id, authority=self.authority)
+        token_cache = load_token_cache(self.token_path) if self.token_path else None
+        app = PublicClientApplication(
+            self.client_id,
+            authority=self.authority,
+            token_cache=token_cache,
+        )
         flow = app.initiate_device_flow(scopes=scopes or self.scopes)
         if "user_code" not in flow:
             logging.error("Failed to initiate device code flow.")
             return None
-
         instruction_message = f"Please visit {flow['verification_uri']} and enter the code: {flow['user_code']}"
-        
         if webbrowser_enabled:
             webbrowser.open(flow['verification_uri'])
             instruction_message += "\nAutomatically opening the browser to the above URL."
         else:
             instruction_message += "\nPlease manually open the above URL in your browser and enter the code."
-
         print(instruction_message)
         sys.stdout.flush()
-
-        expires_at = time.time() + flow['expires_in']
+        expires_at = time.time() + flow["expires_in"]
         while time.time() < expires_at:
-            time.sleep(flow['interval'])
+            time.sleep(flow["interval"])
             result = app.acquire_token_by_device_flow(flow)
-            if 'access_token' in result:
+            if "access_token" in result:
+                if self.token_path and token_cache:
+                    save_token_cache(token_cache, self.token_path)
                 self.token_result_cache = result
                 self._update_internal_state()
                 logging.info("Token acquired successfully!")
-                return None                
+                return None
             elif "error" in result:
                 logging.error(f"Failed to acquire token: {result}")
                 break
@@ -628,10 +640,8 @@ class Authentication:
 
        
        
-def __dir__():
-    return ['Authentication']
-
+# ─── Define module’s public interface ───────────────────────────
 __all__ = ['Authentication']
-
+def __dir__(): return __all__
 	
 	

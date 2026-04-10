@@ -1,6 +1,12 @@
-import portalocker
-import os
+# -*- coding: utf-8 -*-
+
+#────────── Base Python imports ───────────────────────────────────────────────────────────────────────────────────
 import logging
+import os
+
+#────────── Third-party library imports ───────────────────────────────────────────────────────────────────────────
+import portalocker
+
 
 def enforce_single_instance(lockfile):
     """

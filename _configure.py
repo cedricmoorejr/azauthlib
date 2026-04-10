@@ -1,10 +1,14 @@
-import re
-import base64
-import os
-import logging
+# -*- coding: utf-8 -*-
 
-# Custom Imports
+#────────── Base Python imports ───────────────────────────────────────────────────────────────────────────────────
+import base64
+import logging
+import os
+import re
+
+#────────── Project-specific imports (directly from this project's source code) ───────────────────────────────────  
 from azauthlib.appdata import UserDataDirectory
+
 
 class hull:
     class bool:
@@ -79,7 +83,6 @@ class hull:
             return unformatted
 
 
-
 class SensitieweWaarde:
     def __init__(self, value):
         self._value = hull.format.chr(value, "format")        
@@ -101,39 +104,6 @@ class SensitieweWaarde:
         Mask the value when converting to string.
         """
         return "<Sensitief>"
-
-# class _Load:
-#     def __init__(self, file_path):
-#         self.file_path = file_path
-#         self.variables = {}
-#         self.load_config()
-# 
-#     def load_config(self):
-#         """
-#         Load configuration variables from a file and assign them as instance attributes.
-#         """
-#         try:
-#             with open(self.file_path, "r") as file:
-#                 for line in file:
-#                     line = line.strip()
-#                     if "=" in line:
-#                         key, value = line.split("=", 1)
-#                         key = key.strip()
-#                         value = value.strip().strip('"')
-#                         sensitive_value = SensitieweWaarde(value)
-#                         self.variables[key] = sensitive_value
-#                         setattr(self, key, sensitive_value)
-#         except FileNotFoundError:
-#             logging.error(f"Error: The file '{self.file_path}' does not exist.")
-#         except Exception as e:
-#             logging.error(f"An error occurred: {e}")
-# 
-#     def get_variable(self, key):
-#         """
-#         Retrieve the SensitieweWaarde object of a configuration variable by key.
-#         """
-#         return getattr(self, key, None)
-
 
 class _Load:       
     def __init__(self, file_name):
@@ -167,7 +137,6 @@ class _Load:
         Retrieve the SensitieweWaarde object of a configuration variable by key.
         """
         return getattr(self, key, None)
-
 
 
 class SetPaths:
@@ -229,10 +198,9 @@ tk_dirname = _config.get_variable("tkn")
 konfigurasie = SetPaths(cred_dirname, tk_dirname)    
 
 
-def __dir__():
-    return ['konfigurasie']
-
+# ─── Define module’s public interface ───────────────────────────
 __all__ = ['konfigurasie']
+def __dir__(): return __all__
 
 
 

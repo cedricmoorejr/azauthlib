@@ -1,13 +1,16 @@
-import os
-import string
+# -*- coding: utf-8 -*-
+
+#────────── Base Python imports ───────────────────────────────────────────────────────────────────────────────────
 import atexit
-import shutil
-from random import Random as RandomGenerator
-import uuid
-import time
-import re
 import logging
+import os
 import platform
+import re
+import shutil
+import string
+import time
+import uuid
+from random import Random as RandomGenerator
 
 # Configure logging
 logging.basicConfig(
@@ -357,4 +360,3 @@ class UserDataDirectory:
             The list of public method names.
         """    	
         return ['Dir', 'Exists', 'Omit', 'DirFile', 'Clean']
-

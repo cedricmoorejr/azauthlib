@@ -15,7 +15,6 @@
 
 🔐 Whether you're building applications that interact with Microsoft Graph APIs or automating workflows, `azauthlib` has you covered.
 
-[![PyPI Downloads](https://static.pepy.tech/badge/azauthlib)](https://pepy.tech/projects/azauthlib)
 ![Microsoft REST API](https://img.shields.io/badge/Powered%20by-Microsoft%20REST%20APIs-blue)
 ![Release Date](https://img.shields.io/github/release-date/cedricmoorejr/azauthlib)
 ![Azure](https://img.shields.io/badge/Cloud-Azure-blue?logo=microsoft-azure)
@@ -31,7 +30,6 @@
 ![Docs](https://img.shields.io/badge/docs-complete-brightgreen)
 ![Microsoft Graph](https://img.shields.io/badge/Microsoft%20Graph-API-blue?logo=microsoft)
 ![Code Style](https://img.shields.io/badge/code%20style-pep8-green)
-[![Engineered by DOYDL Technologies](https://img.shields.io/badge/Engineered%20by-DOYDL%20Technologies-blue)](https://doydl.com)
 ---
 
 ## ✨ **Features** ✨
@@ -112,7 +110,7 @@ python config_app.py
 > - Choose your authentication method.  
 > - Credentials are saved securely in a `.env` file.  
 
-![GUI Screenshot](https://raw.githubusercontent.com/cedricmoorejr/azauthlib/v1.0.0b1/assets/gui_main.png)
+![GUI Screenshot](https://raw.githubusercontent.com/cedricmoorejr/azauthlib/v1.3.1b1/assets/gui_main.png)
 
 ---
 
@@ -218,7 +216,7 @@ This project is licensed under the **Apache License 2.0**. See the `LICENSE` fil
 
 ---
 
-🔗 **[GitHub Repository](https://github.com/cedricmoorejr/azauthlib/tree/v1.0.0b1)**  
+🔗 **[GitHub Repository](https://github.com/cedricmoorejr/azauthlib/tree/v1.3.1b1)**  
 💬 **Feedback? Issues?** We’d love to hear from you!
 
 --- 

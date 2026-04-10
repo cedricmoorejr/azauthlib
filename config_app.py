@@ -1,18 +1,22 @@
-import re
-import os
-import tkinter as tk
-from tkinter import ttk, messagebox, font
-import threading
-import time
-import queue
+# -*- coding: utf-8 -*-
+
+#────────── Base Python imports ───────────────────────────────────────────────────────────────────────────────────
 import atexit
 import logging
+import os
+import queue
+import re
 import sys
+import threading
+import time
+import tkinter as tk
+from tkinter import font, messagebox, ttk
 
-# Custom Imports
-from azauthlib.gui_utils import enforce_single_instance, on_exit
-from azauthlib.appdata import UserDataDirectory, find_default_user_data_dir
+#────────── Project-specific imports (directly from this project's source code) ───────────────────────────────────
 from azauthlib._configure import konfigurasie
+from azauthlib.appdata import UserDataDirectory, find_default_user_data_dir
+from azauthlib.gui_utils import enforce_single_instance, on_exit
+
 
 # Define the application name
 app_name = "azgraphx-auth"
@@ -31,7 +35,7 @@ atexit.register(on_exit, lock, lockfile_path)
 
 # Configure dirs
 app_dir = UserDataDirectory(dirname=konfigurasie.cred_dirname.get(), auto_remove=False)
-app_dir.Clean(alldirs=True)
+app_dir.Clean(alldirs=False)
 app_placementdir = app_dir.Dir()
 
 
@@ -164,34 +168,6 @@ class CredentialsWindow(tk.Tk):
             )
             row += 1
 
-        # # Header for setup method selection
-        # #=========================================================================================          
-        # setup_header = tk.Label(self, text="Select Setup Method", font=header_font, anchor="w")
-        # setup_header.grid(row=row, column=0, sticky=tk.W, padx=20, pady=(20, 5))
-        # row += 1
-        # 
-        # self.setup_method_var = tk.StringVar(value="default")
-        # 
-        # self.default_checkbox = tk.Radiobutton(
-        #     self,
-        #     text="Setup using Default",
-        #     variable=self.setup_method_var,
-        #     value="default",
-        #     font=large_font2
-        # )
-        # self.default_checkbox.grid(row=row, column=0, sticky=tk.W, padx=40, pady=5)
-        # row += 1
-        # 
-        # self.env_checkbox = tk.Radiobutton(
-        #     self,
-        #     text="Setup using Environment Variables",
-        #     variable=self.setup_method_var,
-        #     value="environment",
-        #     font=large_font2
-        # )
-        # self.env_checkbox.grid(row=row, column=0, sticky=tk.W, padx=40, pady=5)
-        # row += 1
-
         # Header for credentials input
         #=========================================================================================        
         credentials_header = tk.Label(self, text="Enter Credentials", font=header_font, anchor="w")
@@ -245,7 +221,6 @@ class CredentialsWindow(tk.Tk):
         env_variables = {
             "CLIENT_ID": client_id,
             "TENANT_ID": tenant_id,
-            # "AUTHORITY": f'https://login.microsoftonline.com/{tenant_id}'
         }
         if client_secret:
             env_variables["CLIENT_SECRET"] = client_secret
@@ -254,7 +229,6 @@ class CredentialsWindow(tk.Tk):
         comments = {
             "CLIENT_ID": "Your Microsoft Graph client ID",
             "TENANT_ID": "Your Microsoft Graph tenant ID",
-            # "AUTHORITY": "The authority URL for Microsoft login"
         }
         if client_secret:
             comments["CLIENT_SECRET"] = "Your Microsoft Graph client secret if applicable"
@@ -276,10 +250,6 @@ class CredentialsWindow(tk.Tk):
     def __dir__(self):
         return ['run']
 
-
-# if __name__ == '__main__':
-#     GUI = CredentialsWindow()
-#     GUI.run()
 
 def main():
     """Launches the GUI application."""
