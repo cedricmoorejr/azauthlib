@@ -32,7 +32,7 @@ dependencies = [
   "msal-extensions>=1.2,<2",
   "platformdirs>=4,<5",
   "portalocker>=2.10,<4",
-  "python-dotenv>=1.0,<2",
+  "python-dotenv>=1.2.3,<2",
 ]
 
 [project.optional-dependencies]
