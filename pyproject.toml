@@ -31,7 +31,7 @@ dependencies = [
   "msal>=1.31,<2",
   "msal-extensions>=1.2,<2",
   "platformdirs>=4,<5",
-  "portalocker>=2.10,<4",
+  "portalocker>=4.4.0,<5",
   "python-dotenv>=1.0,<2",
 ]
 
