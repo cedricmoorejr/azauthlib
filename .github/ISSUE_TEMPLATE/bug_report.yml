@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a reproducible problem without including credentials or tokens.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Never include access tokens, refresh tokens, client secrets, or tenant-private data."
+  - type: input
+    id: version
+    attributes:
+      label: azauthlib version
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide minimal sanitized code and the observed behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true

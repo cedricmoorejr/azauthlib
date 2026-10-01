@@ -1,225 +1,156 @@
+# azauthlib
 
+Secure Microsoft identity platform authentication helpers built on
+[MSAL for Python](https://github.com/AzureAD/microsoft-authentication-library-for-python).
 
----
+> **Beta:** APIs may change before the first stable release. Do not deploy a beta upgrade without
+> testing its cache, keyring, and authentication behavior in your environment.
 
-<div align="center">
+[![PyPI](https://img.shields.io/pypi/v/azauthlib)](https://pypi.org/project/azauthlib/)
+[![Python](https://img.shields.io/pypi/pyversions/azauthlib)](https://pypi.org/project/azauthlib/)
+[![License](https://img.shields.io/github/license/cedricmoorejr/azauthlib)](LICENSE)
 
-# 🌟 **azauthlib** 🌟
+## Features
 
-> **Your Simplified Authentication Companion for Azure Microsoft Graph**
+- Interactive, silent, device-code, and client-credentials authentication.
+- Encrypted, cross-process-safe token persistence through MSAL Extensions.
+- Client secrets stored in the operating-system credential manager.
+- Exact-path `.env` loading; no upward directory search.
+- Delegated and application scope handling kept separate.
+- No filesystem writes or global logging configuration during import.
 
-</div>
-
-
-`azauthlib` is a Python library that **streamlines the authentication process** with Azure Microsoft Graph. From interactive logins to client credentials flow, `azauthlib` provides an intuitive interface, robust token management, and a GUI for seamless configuration.  
-
-🔐 Whether you're building applications that interact with Microsoft Graph APIs or automating workflows, `azauthlib` has you covered.
-
-![Microsoft REST API](https://img.shields.io/badge/Powered%20by-Microsoft%20REST%20APIs-blue)
-![Release Date](https://img.shields.io/github/release-date/cedricmoorejr/azauthlib)
-![Azure](https://img.shields.io/badge/Cloud-Azure-blue?logo=microsoft-azure)
-![Language](https://img.shields.io/badge/language-python-blue)
-![License](https://img.shields.io/github/license/cedricmoorejr/azauthlib)
-![PyPI](https://img.shields.io/pypi/v/azauthlib)
-![Static Badge](https://img.shields.io/badge/status-beta-yellow)
-![OAuth 2.0](https://img.shields.io/badge/OAuth-2.0-blue)
-![Version](https://img.shields.io/github/v/release/cedricmoorejr/azauthlib)
-![Azure AD](https://img.shields.io/badge/Azure%20Active%20Directory-Integration-blue?logo=microsoft)
-![OpenID Connect](https://img.shields.io/badge/OpenID%20Connect-Supported-green)
-![Azure DevOps](https://img.shields.io/badge/DevOps-Azure-blue?logo=azure-devops)
-![Docs](https://img.shields.io/badge/docs-complete-brightgreen)
-![Microsoft Graph](https://img.shields.io/badge/Microsoft%20Graph-API-blue?logo=microsoft)
-![Code Style](https://img.shields.io/badge/code%20style-pep8-green)
----
-
-## ✨ **Features** ✨
-
-✅ **Multiple Authentication Flows**  
-- Silent Authentication  
-- Interactive Authentication  
-- Device Code Flow  
-- Client Credentials  
-
-✅ **Graphical User Interface (GUI)**  
-- Configure credentials with an easy-to-use GUI.
-
-✅ **Token Management**  
-- Automatic refresh for access tokens  
-- Secure token storage  
-
-✅ **Flexible Environment Configuration**  
-- Use `.env` files, OS variables, or direct input.  
-
-✅ **Customizable Permissions**  
-- Specify Microsoft Graph API scopes effortlessly.
-
----
-
-## 🚀 **Installation**
-
-### Install from PyPI  
+## Installation
 
 ```bash
-pip install azauthlib
+python -m pip install azauthlib
 ```
 
-### Install from Source  
+From a source checkout:
 
 ```bash
-git clone https://github.com/cedricmoorejr/azauthlib.git
+git clone git@github.com:cedricmoorejr/azauthlib.git
 cd azauthlib
-pip install .
+python -m pip install .
 ```
 
-### 📋 **Requirements**
-- Python 3.7+
-- `msal`
-- `portalocker`
-- `python-dotenv`
+Python 3.10 or newer is required.
 
-Install dependencies manually if needed:  
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 🛠 **Getting Started**
-
-### 1️⃣ **Prerequisites**
-- Register an app in **Azure Active Directory** via the [Azure Portal](https://portal.azure.com/).
-- Collect the following:
-  - `CLIENT_ID`
-  - `TENANT_ID`
-  - (Optional) `CLIENT_SECRET`  
-
-- Assign the appropriate Microsoft Graph API permissions.
-
-### 2️⃣ **Configuration Options**
-#### 🌐 **Option A: GUI Mode**
-
-Launch the GUI for intuitive configuration:
-
-```bash
-python config_app.py
-```
-
-> 💡 **What You Can Do in the GUI:**  
-> - Enter credentials (`CLIENT_ID`, `TENANT_ID`, etc.).  
-> - Choose your authentication method.  
-> - Credentials are saved securely in a `.env` file.  
-
-![GUI Screenshot](https://raw.githubusercontent.com/cedricmoorejr/azauthlib/v1.3.1b1/assets/gui_main.png)
-
----
-
-#### 🛠 **Option B: Non-GUI Mode**
-
-1. **Using Environment Variables** (Recommended):  
-
-```bash
-export TENANT_ID="your-tenant-id"
-export CLIENT_ID="your-client-id"
-export CLIENT_SECRET="your-client-secret"
-```
-
-2. **Hardcoding in Code** (⚠️ Not Recommended):  
+## Public-client authentication
 
 ```python
-from azauthlib import Authentication
+from azauthlib import Authentication, InteractionRequiredError
 
-auth = Authentication(scopes="Files.ReadWrite.All")
+auth = Authentication(scopes=["User.Read"])
 auth.Build.WithEntry(
-    client_id="your-client-id",
-    tenant_id="your-tenant-id",
-    client_secret="your-client-secret"
+    client_id="00000000-0000-0000-0000-000000000000",
+    tenant_id="organizations",
 )
+
+try:
+    result = auth.Silent()
+except InteractionRequiredError:
+    result = auth.Interactive()
+
+print(result["token_source"])
+# Use auth.access_token only where an Authorization header is required.
 ```
 
----
+Silent authentication does not unexpectedly launch a browser. Pass
+`fallback_to_interactive=True` if that behavior is explicitly desired.
 
-## 🔑 **Authentication Flows**
-
-### 🔒 **Silent Authentication**  
-Authenticate using cached tokens.  
+## Device-code authentication
 
 ```python
-auth.Silent()
+auth = Authentication(scopes=["Files.Read"])
+auth.Build.WithEntry(client_id="...", tenant_id="organizations")
+result = auth.DeviceCodeFlow(webbrowser_enabled=True)
 ```
 
-### 🌐 **Interactive Authentication**  
-Prompts user to log in via a browser.
+MSAL controls polling and expiration. The method blocks until authentication completes or fails.
+
+## Client-credentials authentication
+
+Microsoft requires the `/.default` resource scope for client credentials:
 
 ```python
-auth.Interactive()
+auth = Authentication()
+auth.Build.WithEntry(
+    client_id="...",
+    tenant_id="...",
+    client_secret="...",
+)
+result = auth.ClientCredentials()
+# Default scope: https://graph.microsoft.com/.default
 ```
 
-### 📱 **Device Code Flow**  
-Displays a device code for cross-device authentication.
+For production workloads, prefer a certificate or workload identity federation over a shared
+secret when your deployment architecture supports it.
+
+## Configuration
+
+Environment variables are supported:
+
+```bash
+export CLIENT_ID="..."
+export TENANT_ID="..."
+export CLIENT_SECRET="..." # confidential clients only
+```
 
 ```python
-auth.DeviceCodeFlow(webbrowser_enabled=True)
+auth = Authentication(scopes=["User.Read"])
+auth.Build.WithOSEnv()
 ```
 
-### 🤝 **Client Credentials Flow**  
-Authenticate server-to-server.
+`WithOSEnv()` treats mapping values strictly as environment-variable names. Use `WithEntry()` for
+literal values.
+
+The optional configuration application stores the client ID and tenant ID in azauthlib's platform
+configuration directory. Client secrets go to the operating-system keyring, never the `.env` file:
+
+```bash
+azauthlib-app
+```
+
+## Token-cache security
+
+Encrypted persistence is the default and fails closed when the OS encryption provider is
+unavailable. On Linux, ensure an appropriate Secret Service/LibSecret backend is configured.
+
+Plaintext fallback requires an explicit opt-in:
 
 ```python
-auth.ClientCredentials()
+auth = Authentication(allow_plaintext_cache=True)
 ```
 
----
+Only use that option when file permissions and the threat model have been independently reviewed.
 
-## 💼 **Token Management**
+## Error handling
 
-- **Access Token**: Retrieve the active token.  
+Authentication methods return the successful MSAL result dictionary. Failures raise:
 
-  ```python
-  token = auth.access_token
-  ```
+- `AuthenticationError` for identity platform or protocol errors.
+- `InteractionRequiredError` when silent authentication cannot continue.
+- `TokenCacheSecurityError` when secure persistence cannot be established.
 
-- **Token Expiry**: Check token lifetime.  
+Error logs include error codes and correlation IDs, not full response dictionaries or tokens.
 
-  ```python
-  print("Token expires in:", auth.token_expires_in)
-  ```
+## Development
 
-- **Automatic Refresh**: Tokens are refreshed seamlessly.
+```bash
+python -m pip install -e ".[dev]"
+ruff check .
+ruff format --check .
+bandit -c pyproject.toml -r src
+pip-audit --skip-editable
+pytest
+python -m build
+twine check dist/*
+```
 
----
+See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and
+[CHANGELOG.md](CHANGELOG.md). Maintainers should also follow [RELEASING.md](RELEASING.md).
 
-## 📜 **Logging**
+## License
 
-Easily track authentication flow and token operations using Python’s `logging` module. Customize as needed!
-
----
-
-## 🤝 **Contributing**
-
-We welcome contributions! 🚀 Here's how you can help:  
-1. Fork the repo.  
-2. Create a feature or bugfix branch.  
-3. Submit a PR with a detailed description.  
-
----
-
-## 📄 **License**
-
-This project is licensed under the **Apache License 2.0**. See the `LICENSE` file for more details.
-
----
-
-## ℹ️ **Trademarks**
-
-- This project references **Microsoft** trademarks such as Azure and Microsoft Graph. Please ensure compliance with Microsoft’s [Trademark Guidelines](https://www.microsoft.com/trademarks).
-
----
-
-🔗 **[GitHub Repository](https://github.com/cedricmoorejr/azauthlib/tree/v1.3.1b1)**  
-💬 **Feedback? Issues?** We’d love to hear from you!
-
---- 
-
-
-
+Apache License 2.0. Microsoft, Azure, Entra, and Microsoft Graph are trademarks of Microsoft and
+are not affiliated with or endorsed by this project.
