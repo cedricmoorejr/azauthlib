@@ -8,7 +8,7 @@ PyPI and attached to the GitHub release with a SHA-256 checksum file.
 1. Create a GitHub environment named `pypi`. Add required reviewers when another trusted maintainer
    is available.
 2. In the PyPI `azauthlib` project, add a GitHub Trusted Publisher with:
-   - owner: `cedricmoorejr`
+   - owner: `doydl-technologies`
    - repository: `azauthlib`
    - workflow: `publish.yml`
    - environment: `pypi`

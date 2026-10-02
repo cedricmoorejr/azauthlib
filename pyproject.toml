@@ -48,10 +48,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/cedricmoorejr/azauthlib"
-Issues = "https://github.com/cedricmoorejr/azauthlib/issues"
-Repository = "https://github.com/cedricmoorejr/azauthlib"
-Changelog = "https://github.com/cedricmoorejr/azauthlib/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/doydl-technologies/azauthlib"
+Issues = "https://github.com/doydl-technologies/azauthlib/issues"
+Repository = "https://github.com/doydl-technologies/azauthlib"
+Changelog = "https://github.com/doydl-technologies/azauthlib/blob/main/CHANGELOG.md"
 
 [project.scripts]
 azauthlib-app = "azauthlib.gui.config_app:main"

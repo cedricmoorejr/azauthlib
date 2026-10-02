@@ -8,7 +8,7 @@ Secure Microsoft identity platform authentication helpers built on
 
 [![PyPI](https://img.shields.io/pypi/v/azauthlib)](https://pypi.org/project/azauthlib/)
 [![Python](https://img.shields.io/pypi/pyversions/azauthlib)](https://pypi.org/project/azauthlib/)
-[![License](https://img.shields.io/github/license/cedricmoorejr/azauthlib)](LICENSE)
+[![License](https://img.shields.io/github/license/doydl-technologies/azauthlib)](LICENSE)
 
 ## Features
 
@@ -28,7 +28,7 @@ python -m pip install azauthlib
 From a source checkout:
 
 ```bash
-git clone git@github.com:cedricmoorejr/azauthlib.git
+git clone git@github.com:doydl-technologies/azauthlib.git
 cd azauthlib
 python -m pip install .
 ```
